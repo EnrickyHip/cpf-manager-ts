@@ -1,21 +1,20 @@
-import { random } from "../functions/random.js";
+import { random } from "./utils/random";
 
 export default class Cpf {
-  static generate() {
-    let cpfString;
+  static generate(): string {
+    let cpf: string;
 
     do {
       const cpfNumber = random(100000000, 999999999);
-      cpfString = cpfNumber.toString();
-    } while (Cpf.isSequence(cpfString));
+      cpf = cpfNumber.toString();
+    } while (Cpf.isSequence(cpf));
 
-    const firstDigit = Cpf.createDigit(cpfString);
-    const secondDigit = Cpf.createDigit(cpfString + firstDigit); // o + concatena o first digit no fim da string
-    return Cpf.formatCpf(cpfString + firstDigit + secondDigit);
+    const firstDigit = Cpf.createDigit(cpf);
+    const secondDigit = Cpf.createDigit(cpf + firstDigit); // o + concatena o first digit no fim da string
+    return Cpf.formatCpf(cpf + firstDigit + secondDigit);
   }
 
-  //checa a validade
-  static validate(cpf) {
+  static validate(cpf: string): boolean {
     const cleanCpf = cpf.replace(/\D+/g, "");
     if (!Cpf.validateString(cleanCpf)) return false;
 
@@ -28,11 +27,11 @@ export default class Cpf {
   }
 
   //cria um digito
-  static createDigit(parcialCpf) {
-    parcialCpf = Array.from(parcialCpf);
+  static createDigit(parcialCpf: string): string {
+    const cpfArray = Array.from(parcialCpf);
 
-    let multiplicator = parcialCpf.length + 2;
-    const cpfMultiplicateArray = parcialCpf.map((number) => {
+    let multiplicator = cpfArray.length + 2;
+    const cpfMultiplicateArray = cpfArray.map((number) => {
       multiplicator--;
       return Number(number) * multiplicator;
     });
@@ -41,24 +40,21 @@ export default class Cpf {
 
     let digit = 11 - (total % 11);
     if (digit > 9) digit = 0;
-    return digit;
+    return String(digit);
   }
 
-  //checa se a string corresponde a um cpf
-  static validateString(cpf) {
-    if (!cpf || typeof cpf !== "string") return false;
+  static validateString(cpf: string) {
     if (cpf.length !== 11) return false;
     if (Cpf.isSequence(cpf)) return false;
     return true;
   }
 
-  //checa se o cpf é uma sequencia, ex: 222.222.222-22
-  static isSequence(cpf) {
+  static isSequence(cpf: string): boolean {
     const sequence = cpf[0].repeat(cpf.length);
     return sequence === cpf;
   }
 
-  static formatCpf(cpf) {
+  static formatCpf(cpf: string): string {
     return cpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4"); //$1, $2, ... -> referem-se a cada parenteses do regex
   }
 }
