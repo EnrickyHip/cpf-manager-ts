@@ -2,7 +2,6 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-Object.defineProperty(exports, "__esModule", { value: true });
 const Cpf_1 = __importDefault(require("./lib/Cpf"));
-exports.default = Cpf_1.default;
+module.exports = Cpf_1.default;
 //# sourceMappingURL=index.js.map
