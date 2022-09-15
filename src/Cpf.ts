@@ -20,7 +20,7 @@ export default class Cpf {
       return false;
     }
 
-    const cleanCpf = cpf.replace(/\D+/g, ""); //remove tudo que não é digito
+    const cleanCpf = Cpf.cleanUp(cpf);
     if (cleanCpf.length !== 11) return false;
     if (Cpf.isSequence(cleanCpf)) return false;
 
@@ -40,6 +40,10 @@ export default class Cpf {
   static format(cpf: string): string {
     const cleanCpf = cpf.replace(/\D+/g, "");
     return cleanCpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4"); //$1, $2, ... -> referem-se a cada parenteses do regex
+  }
+
+  static cleanUp(cpf: string): string {
+    return cpf.replace(/\D+/g, ""); //remove tudo que não é digito
   }
 
   private static createDigit(parcialCpf: string): string {

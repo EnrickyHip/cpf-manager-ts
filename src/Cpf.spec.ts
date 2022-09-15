@@ -90,4 +90,13 @@ describe("Cpf", () => {
       expect(Cpf.format("289 asasa88a  sassa7.56as002")).toBe("289.887.560-02");
     });
   });
+
+  describe("cleanUp", () => {
+    it("should clean up cpf", () => {
+      expect(Cpf.cleanUp("273.032.394-56")).toBe("27303239456");
+      expect(Cpf.cleanUp("649.98136054")).toBe("64998136054");
+      expect(Cpf.cleanUp("652-809-610-43")).toBe("65280961043");
+      expect(Cpf.cleanUp("289 asasa88a  sassa7.56as002")).toBe("28988756002");
+    });
+  });
 });
