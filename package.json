@@ -10,6 +10,7 @@
   "repository": "https://github.com/EnrickyHip/",
   "homepage": "https://github.com/EnrickyHip/",
   "scripts": {
+    "build": "npx tsc",
     "test": "jest --watchAll --noStackTrace",
     "test:once": "jest--noStackTrace",
     "test:silent": "jest --watchAll --silent --noStackTrace",
