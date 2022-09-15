@@ -11,12 +11,18 @@ export default class Cpf {
 
     const firstDigit = Cpf.createDigit(cpf);
     const secondDigit = Cpf.createDigit(cpf + firstDigit); // o + concatena o first digit no fim da string
-    return Cpf.formatCpf(cpf + firstDigit + secondDigit);
+    return Cpf.format(cpf + firstDigit + secondDigit);
   }
 
   static validate(cpf: string): boolean {
-    const cleanCpf = cpf.replace(/\D+/g, "");
-    if (!Cpf.validateString(cleanCpf)) return false;
+    const justNumbersRegex = /^\d{11}$/;
+    if (!justNumbersRegex.test(cpf) && !Cpf.validateFormat(cpf)) {
+      return false;
+    }
+
+    const cleanCpf = cpf.replace(/\D+/g, ""); //remove tudo que não é digito
+    if (cleanCpf.length !== 11) return false;
+    if (Cpf.isSequence(cleanCpf)) return false;
 
     const parcialCpf = cleanCpf.slice(0, -2);
     const firstDigit = Cpf.createDigit(parcialCpf);
@@ -26,8 +32,17 @@ export default class Cpf {
     return newCpf === cleanCpf;
   }
 
-  //cria um digito
-  static createDigit(parcialCpf: string): string {
+  static validateFormat(cpf: string): boolean {
+    const regex = /^(\d{3})\.(\d{3})\.(\d{3})-(\d{2})$/;
+    return regex.test(cpf);
+  }
+
+  static format(cpf: string): string {
+    const cleanCpf = cpf.replace(/\D+/g, "");
+    return cleanCpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4"); //$1, $2, ... -> referem-se a cada parenteses do regex
+  }
+
+  private static createDigit(parcialCpf: string): string {
     const cpfArray = Array.from(parcialCpf);
 
     let multiplicator = cpfArray.length + 2;
@@ -43,18 +58,8 @@ export default class Cpf {
     return String(digit);
   }
 
-  static validateString(cpf: string) {
-    if (cpf.length !== 11) return false;
-    if (Cpf.isSequence(cpf)) return false;
-    return true;
-  }
-
-  static isSequence(cpf: string): boolean {
+  private static isSequence(cpf: string): boolean {
     const sequence = cpf[0].repeat(cpf.length);
     return sequence === cpf;
-  }
-
-  static formatCpf(cpf: string): string {
-    return cpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4"); //$1, $2, ... -> referem-se a cada parenteses do regex
   }
 }
