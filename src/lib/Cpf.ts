@@ -1,6 +1,7 @@
 import { random } from "./utils/random";
 
 export default class Cpf {
+  static readonly regex = /^(\d{3})\.(\d{3})\.(\d{3})-(\d{2})$/;
   /**
    * Gera um CPF válido aleatório.
    * @returns O cpf no formato: 999.999.999-99.
@@ -50,8 +51,7 @@ export default class Cpf {
    */
 
   static validateFormat(cpf: string): boolean {
-    const regex = /^(\d{3})\.(\d{3})\.(\d{3})-(\d{2})$/;
-    return regex.test(cpf);
+    return Cpf.regex.test(cpf);
   }
 
   /**
