@@ -10,6 +10,8 @@ describe("Cpf", () => {
     it("should not validate format", () => {
       expect(Cpf.validateFormat("123123.000-00")).toBeFalsy();
       expect(Cpf.validateFormat("000.000.000.05")).toBeFalsy();
+      expect(Cpf.validateFormat("aaa.aaa.aaa-aa")).toBeFalsy();
+      expect(Cpf.validateFormat("aaa.aaa.000.00")).toBeFalsy();
       expect(Cpf.validateFormat("000-000-000-05")).toBeFalsy();
       expect(Cpf.validateFormat("000-000-000.05")).toBeFalsy();
       expect(Cpf.validateFormat("000-000.000-05")).toBeFalsy();
@@ -63,7 +65,7 @@ describe("Cpf", () => {
     it("should not validate cpf if format is wrong", () => {
       expect(Cpf.validate("273-232-394-56")).toBeFalsy();
       expect(Cpf.validate("649.981.360.54")).toBeFalsy();
-      expect(Cpf.validate("65280961043 ")).toBeFalsy();
+      expect(Cpf.validate("652809610436")).toBeFalsy();
       expect(Cpf.validate("289as88756002")).toBeFalsy();
     });
 
@@ -92,6 +94,13 @@ describe("Cpf", () => {
   });
 
   describe("cleanUp", () => {
+    it("should return null if is not possible to format", () => {
+      expect(Cpf.format("9655638600")).toBeNull();
+      expect(Cpf.format("aaaa")).toBeNull();
+      expect(Cpf.format("238.472.983-4")).toBeNull();
+      expect(Cpf.format("aaa.aaa.aaa-aa")).toBeNull();
+    });
+
     it("should clean up cpf", () => {
       expect(Cpf.cleanUp("273.032.394-56")).toBe("27303239456");
       expect(Cpf.cleanUp("649.98136054")).toBe("64998136054");

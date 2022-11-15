@@ -17,7 +17,7 @@ export default class Cpf {
 
     const firstDigit = Cpf.createDigit(cpf);
     const secondDigit = Cpf.createDigit(cpf + firstDigit); // o + concatena o first digit no fim da string
-    return Cpf.format(cpf + firstDigit + secondDigit);
+    return Cpf.format(cpf + firstDigit + secondDigit) as string;
   }
 
   /**
@@ -57,7 +57,7 @@ export default class Cpf {
   /**
    * Formata um CPF no formato: 999.999.999-99.
    * @param cpf CPF a ser formatado. Esse parâmetro é extremamente livre, pois a função filtra tudo que não for dígito.
-   * @returns O CPF formatado.
+   * @returns O CPF formatado. Caso não seja possível formatar o cpf por não possuir a quantidade necessária de caracteres, o retorno será `null`
    * @example
    *
    * const cpfFormatado = Cpf.format('27303239456');
@@ -77,8 +77,9 @@ export default class Cpf {
    * //output: 289.887.560-02
    */
 
-  static format(cpf: string): string {
+  static format(cpf: string) {
     const cleanCpf = Cpf.cleanUp(cpf);
+    if (cleanCpf.length < 11) return null;
     return cleanCpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4"); //$1, $2, ... -> referem-se a cada parenteses do regex
   }
 
