@@ -11,6 +11,7 @@ export default class Cpf {
     let cpf = "";
 
     do {
+      cpf = "";
       for (let index = 0; index < 9; index++) {
         const randomNumber = random(0, 9);
         cpf += randomNumber.toString();
