@@ -8,11 +8,13 @@ export default class Cpf {
    */
 
   static generate(): string {
-    let cpf: string;
+    let cpf = "";
 
     do {
-      const cpfNumber = random(100000000, 999999999);
-      cpf = cpfNumber.toString();
+      for (let index = 0; index < 9; index++) {
+        const randomNumber = random(0, 9);
+        cpf += randomNumber.toString();
+      }
     } while (Cpf.isSequence(cpf));
 
     const firstDigit = Cpf.createDigit(cpf);
@@ -102,13 +104,13 @@ export default class Cpf {
   private static createDigit(parcialCpf: string): string {
     const cpfArray = Array.from(parcialCpf);
 
-    let multiplicator = cpfArray.length + 2;
-    const cpfMultiplicateArray = cpfArray.map((number) => {
-      multiplicator--;
-      return Number(number) * multiplicator;
-    });
+    let total = 0;
+    let multiplier = cpfArray.length + 1;
 
-    const total = cpfMultiplicateArray.reduce((ac, value) => value + ac);
+    for (const digit of cpfArray) {
+      total += Number(digit) * multiplier;
+      multiplier--;
+    }
 
     let digit = 11 - (total % 11);
     if (digit > 9) digit = 0;
